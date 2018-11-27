@@ -3,6 +3,8 @@ import productAddPage from './pages/productAdd/productAdd'
 import ClassPage from './pages/class/class'
 import User from './pages/user/user'
 import Order from './pages/order/order'
+import OrderDetail from './pages/orderDetail/orderDetail'
+import ProductDetail from './pages/productDetail/productDetail'
 export const router = [
     {
         path:'/',
@@ -27,6 +29,16 @@ export const router = [
     {
         path:'/orderLists',
         component:Order,
+        exact:true
+    },
+    {
+        path:'/orderDetail',
+        component:OrderDetail,
+        exact:true
+    },
+    {
+        path:'/productDetail',
+        component:ProductDetail,
         exact:true
     }
 ]

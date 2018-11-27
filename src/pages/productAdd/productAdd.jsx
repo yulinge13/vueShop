@@ -79,6 +79,7 @@ class productAddPage extends Component {
                                 <Popconfirm title="Are you sure delete this list?" onConfirm={this.removeList.bind(this, columns.id)} onCancel={this.cancelDelete} okText="Yes" cancelText="No">
                                     <Button type="danger" shape="circle" icon="delete" />
                                 </Popconfirm>
+                                <Button type="primary" shape="circle" icon="shop" style={{ marginLeft: '10px' }} onClick={this.linkeToDetail.bind(this, columns)} />
                             </div>
                         )
                     }
@@ -103,6 +104,15 @@ class productAddPage extends Component {
     componentDidMount() {
         this.getLists()
         this.getFirstClass()
+    }
+    //跳转到 产品详情页
+    linkeToDetail(row){
+        this.props.history.push({
+            pathname:'/productDetail',
+            state:{
+                id:row.id
+            }
+        })
     }
     //取消删除
     cancelDelete(){
