@@ -8,8 +8,9 @@ import {
     message
 } from 'antd';
 import SelectCom from '../../components/selectCom'
+import { connect } from 'react-redux';
 let { containHttp } = httpLists
-const { addUserInfo,login } = containHttp
+const { addUserInfo, login } = containHttp
 class User extends Component {
     constructor(props) {
         super(props)
@@ -58,20 +59,21 @@ class User extends Component {
             sex: val.value
         })
     }
-    handleLogin(){
+    handleLogin() {
         const { name, passWord } = this.state
-        if (name && passWord) {
-            login({ name, passWord}).then(res => {
-                if (res.success) {
-                    localStorage.setItem('token',res.data.token)
-                    message.success(res.msg)
-                } else {
-                    message.error(res.msg)
-                }
-            })
-        } else {
-            message.error('请填写完整信息')
-        }
+        this.props.toLoginIn(name,passWord)
+        // if (name && passWord) {
+        //     login({ name, passWord }).then(res => {
+        //         if (res.success) {
+        //             localStorage.setItem('token', res.data.token)
+        //             message.success(res.msg)
+        //         } else {
+        //             message.error(res.msg)
+        //         }
+        //     })
+        // } else {
+        //     message.error('请填写完整信息')
+        // }
     }
     render() {
         const {
@@ -128,4 +130,22 @@ class User extends Component {
         )
     }
 }
-export default User
+const mapStateToProps = (state) => {
+    console.log(state)
+    return {
+        isLogin: state.isLogin,
+        username: state.username,
+        password: state.password,
+        activityList: state.activityList
+    }
+}
+const mapStateToDispatch = (dispatch) => {
+    return {
+        toLoginIn: (username, password) => {
+            console.log(username)
+            console.log(password)
+            dispatch({ type: 'LOGIN', username, password });
+        },
+    }
+}
+export default connect(mapStateToProps, mapStateToDispatch)(User);
