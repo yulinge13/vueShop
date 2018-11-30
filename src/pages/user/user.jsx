@@ -11,6 +11,26 @@ import SelectCom from '../../components/selectCom'
 import { connect } from 'react-redux';
 let { containHttp } = httpLists
 const { addUserInfo, login } = containHttp
+@connect(
+    (state) => {
+        console.log(state)
+        return {
+            isLogin: state.isLogin,
+            username: state.username,
+            password: state.password,
+            activityList: state.activityList
+        }
+    },
+    (dispatch) => {
+        return {
+            toLoginIn: (username, password) => {
+                console.log(username)
+                console.log(password)
+                dispatch({ type: 'LOGIN', username, password });
+            },
+        }
+    }
+)
 class User extends Component {
     constructor(props) {
         super(props)
@@ -61,7 +81,7 @@ class User extends Component {
     }
     handleLogin() {
         const { name, passWord } = this.state
-        this.props.toLoginIn(name,passWord)
+        this.props.toLoginIn(name, passWord)
         // if (name && passWord) {
         //     login({ name, passWord }).then(res => {
         //         if (res.success) {
@@ -130,22 +150,4 @@ class User extends Component {
         )
     }
 }
-const mapStateToProps = (state) => {
-    console.log(state)
-    return {
-        isLogin: state.isLogin,
-        username: state.username,
-        password: state.password,
-        activityList: state.activityList
-    }
-}
-const mapStateToDispatch = (dispatch) => {
-    return {
-        toLoginIn: (username, password) => {
-            console.log(username)
-            console.log(password)
-            dispatch({ type: 'LOGIN', username, password });
-        },
-    }
-}
-export default connect(mapStateToProps, mapStateToDispatch)(User);
+export default User
