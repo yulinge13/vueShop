@@ -3,10 +3,12 @@ import {
     Button,
     Table,
     Select,
-    message
+    message,
+    Form
 } from 'antd';
 import '../productAdd/product_add.less'
 import httpLists from '../../utils/http'
+import {connect} from 'react-redux'
 const Option = Select.Option;
 let { containHttp } = httpLists
 const {
@@ -15,6 +17,17 @@ const {
     getAllProduct,
     orderPay
 } = containHttp
+@connect(
+    state => {
+        return {
+        }
+    },
+    dispatch => {
+        return {
+
+        }
+    }
+)
 class Order extends Component {
     constructor(props) {
         super(props)
@@ -106,8 +119,6 @@ class Order extends Component {
             if (res.success) {
                 message.success(res.msg)
                 this.getLists()
-            } else {
-                message.error(res.msg)
             }
         })
     }
@@ -141,8 +152,6 @@ class Order extends Component {
             if (res.success) {
                 message.success(res.msg)
                 this.getLists()
-            } else {
-                message.error(res.msg)
             }
         })
     }

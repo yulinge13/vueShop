@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import {Router,Route,Switch} from 'react-router-dom';
-import history from './history';
+import {Route,Switch} from 'react-router-dom';
 import SliderCom from './components/sliderCom'
 import {router as routers} from './router.js'
 import 'antd/dist/antd.css';

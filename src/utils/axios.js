@@ -1,4 +1,7 @@
 import axios from 'axios'
+import {
+    message
+} from 'antd';
 import qs from 'qs'
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
@@ -22,7 +25,7 @@ var instance = axios.create({
     timeout: 1000,
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        token:localStorage.getItem('token') || ''
+        token: localStorage.getItem('token') || ''
     },
     // `transformRequest` 允许在向服务器发送前，修改请求数据
     // 只能用在 'PUT', 'POST' 和 'PATCH' 这几个请求方法
@@ -51,10 +54,20 @@ export const httpGet = (parmas) => {
                     ...data
                 }
             })
-            .then(function (res) {
-                reslove(JSON.parse(res.data))
+            .then((res) => {
+                if (res.status === 200) {
+                    let data = JSON.parse(res.data)
+                    if (data.success) {
+                        reslove(data)
+                    } else {
+                        reslove(data)
+                        message.error(data.msg)
+                    }
+                } else {
+                    message.error(res.statusText)
+                }
             })
-            .catch(function (error) {
+            .catch(error => {
                 reject(error);
             });
     })
@@ -65,16 +78,26 @@ export const httpPost = (parmas) => {
         url,
         data
     } = parmas
-    console.log(data)
     return new Promise((reslove, reject) => {
         instance.post(
                 url, qs.stringify(data)
             )
-            .then(function (res) {
-                reslove(JSON.parse(res.data))
+            .then((res) => {
+                if (res.status === 200) {
+                    let data = JSON.parse(res.data)
+                    if (data.success) {
+                        reslove(data)
+                    } else {
+                        reslove(data)
+                        message.error(data.msg)
+                    }
+                } else {
+                    message.error(res.statusText)
+                }
             })
-            .catch(function (error) {
+            .catch((error) => {
                 reject(error);
+                message.error(error)
             });
     })
 }

@@ -10,22 +10,16 @@ import {
 import SelectCom from '../../components/selectCom'
 import { connect } from 'react-redux';
 let { containHttp } = httpLists
-const { addUserInfo, login } = containHttp
+const { addUserInfo } = containHttp
 @connect(
-    (state) => {
-        console.log(state)
+    state => {
         return {
-            isLogin: state.isLogin,
-            username: state.username,
-            password: state.password,
-            activityList: state.activityList
+            token: state.token,
         }
     },
-    (dispatch) => {
+    dispatch => {
         return {
-            toLoginIn: (username, password) => {
-                console.log(username)
-                console.log(password)
+            login: (username, password) => {
                 dispatch({ type: 'LOGIN', username, password });
             },
         }
@@ -66,8 +60,6 @@ class User extends Component {
             addUserInfo({ name, passWord, age, sex }).then(res => {
                 if (res.success) {
                     message.success('注册成功！')
-                } else {
-                    message.error(res.msg)
                 }
             })
         } else {
@@ -81,19 +73,7 @@ class User extends Component {
     }
     handleLogin() {
         const { name, passWord } = this.state
-        this.props.toLoginIn(name, passWord)
-        // if (name && passWord) {
-        //     login({ name, passWord }).then(res => {
-        //         if (res.success) {
-        //             localStorage.setItem('token', res.data.token)
-        //             message.success(res.msg)
-        //         } else {
-        //             message.error(res.msg)
-        //         }
-        //     })
-        // } else {
-        //     message.error('请填写完整信息')
-        // }
+        this.props.login(name, passWord)
     }
     render() {
         const {

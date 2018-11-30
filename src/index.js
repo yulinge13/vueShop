@@ -7,7 +7,6 @@ import * as serviceWorker from './serviceWorker';
 
 // import 'whatwg-fetch';
 // import 'babel-polyfill';
-import 'babel-plugin-transform-decorators'
 import {Provider} from 'react-redux';
 import rootSaga from './saga';
 import CreateStore from './store';

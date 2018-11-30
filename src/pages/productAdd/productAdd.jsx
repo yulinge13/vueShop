@@ -12,6 +12,11 @@ import {
 import './product_add.less'
 import httpLists from '../../utils/http'
 import SelectCom from '../../components/selectCom'
+import { connect } from 'react-redux';
+// 引入编辑器组件
+import BraftEditor from 'braft-editor'
+// 引入编辑器样式
+import 'braft-editor/dist/index.css'
 let { containHttp } = httpLists
 const {
     getAllProduct,
@@ -26,6 +31,17 @@ function getBase64(img, callback) {
     reader.addEventListener('load', () => callback(reader.result));
     reader.readAsDataURL(img);
 }
+@connect(
+    state => {
+        return {
+        }
+    },
+    dispatch => {
+        return {
+
+        }
+    }
+)
 class productAddPage extends Component {
     constructor(props) {
         super(props)
@@ -99,6 +115,7 @@ class productAddPage extends Component {
             },//添加的商品的信息
             selectSecData: [],//二级分类的数据
             loading: false,//上传图片的loading效果
+            editorState: BraftEditor.createEditorState(null),//富文本的值
         }
     }
     componentDidMount() {
@@ -106,16 +123,16 @@ class productAddPage extends Component {
         this.getFirstClass()
     }
     //跳转到 产品详情页
-    linkeToDetail(row){
+    linkeToDetail(row) {
         this.props.history.push({
-            pathname:'/productDetail',
-            state:{
-                id:row.id
+            pathname: '/productDetail',
+            state: {
+                id: row.id
             }
         })
     }
     //取消删除
-    cancelDelete(){
+    cancelDelete() {
         message.error('Click on No');
     }
     //删除
@@ -227,15 +244,17 @@ class productAddPage extends Component {
     //添加商品
     addProduct() {
         console.log(this.state.addListInfo)
-        let { addListInfo } = this.state
+        let { addListInfo,editorState } = this.state
         let onOff = true
         for (let key in addListInfo) {
-            if (!addListInfo[key]) {
-                onOff = false
+            if(key !== 'productContent'){
+                if (!addListInfo[key]) {
+                    onOff = false
+                }
             }
         }
         if (onOff) {
-            addProduct(this.state.addListInfo).then(res => {
+            addProduct(Object.assign({},this.state.addListInfo,{productContent:editorState})).then(res => {
                 if (res.success) {
                     message.success(res.msg);
                     for (let key in addListInfo) {
@@ -260,12 +279,24 @@ class productAddPage extends Component {
         }
         if (info.file.status === 'done') {
             let { addListInfo } = this.state
-            addListInfo.productPic = info.file.response.url
+            addListInfo.productPic = info.file.response.data.url
             this.setState({
                 addListInfo,
                 loading: false
             })
         }
+    }
+    //保存
+    submitContent = async () => {
+        // 在编辑器获得焦点时按下ctrl+s会执行此方法
+        // 编辑器内容提交到服务端之前，可直接调用editorState.toHTML()来获取HTML格式的内容
+        const htmlContent = this.state.editorState
+        console.log(htmlContent)
+
+    }
+    //保存编辑器的值
+    handleEditorChange = (editorState) => {
+        this.setState({ editorState: editorState.toHTML()})
     }
     render() {
         const {
@@ -275,7 +306,8 @@ class productAddPage extends Component {
             modalShow,
             selectFirstData,
             selectSecData,
-            addListInfo
+            addListInfo,
+            editorState
         } = this.state
         const uploadButton = (
             <div>
@@ -303,6 +335,7 @@ class productAddPage extends Component {
                         onCancel={this.hideModal}
                         okText="确认"
                         cancelText="取消"
+                        width={800}
                     >
                         <div className="modal_cont">
                             <div className="fill">
@@ -388,6 +421,11 @@ class productAddPage extends Component {
                                     </Upload>
                                 </div>
                             </div>
+                            <BraftEditor
+                                value={editorState}
+                                onChange={this.handleEditorChange}
+                                onSave={this.submitContent}
+                            />
                         </div>
                     </Modal>
                 </div>

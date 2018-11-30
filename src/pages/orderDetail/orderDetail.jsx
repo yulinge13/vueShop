@@ -69,8 +69,6 @@ export default class OrderDetail extends Component {
             if (res.success) {
                 message.success(res.msg)
                 this.orderInfo()
-            }else{
-                message.error(res.msg)
             }
         })
     }
@@ -86,8 +84,6 @@ export default class OrderDetail extends Component {
         }).then(res => {
             if(res.success){
                 message.success(res.msg)
-            }else{
-                message.error(res.msg)
             }
         })
     }
