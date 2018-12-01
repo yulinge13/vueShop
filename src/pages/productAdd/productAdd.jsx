@@ -36,17 +36,14 @@ class productAddPage extends Component {
                 {
                     title: '商品名称',
                     dataIndex: 'productName',
-                    key: 'productName',
                 },
                 {
                     title: '商品价格',
                     dataIndex: 'price',
-                    key: 'price',
                 },
                 {
                     title: '商品图片',
                     dataIndex: 'productPic',
-                    key: 'productPic',
                     render: (row) => {
                         return (
                             row ? <img
@@ -63,11 +60,10 @@ class productAddPage extends Component {
                 {
                     title: '商品数量',
                     dataIndex: 'productNum',
-                    key: 'productNum',
                 },
                 {
                     title: '操作',
-                    dataIndex: 'opaction',
+                    key: 'x',
                     render: (row, columns) => {
                         return (
                             <div
@@ -284,7 +280,7 @@ class productAddPage extends Component {
                         <Button type="primary" onClick={this.showModal}>ADD</Button>
                     </div>
                 </div>
-                <Table dataSource={lists} columns={columns} />
+                <Table dataSource={lists} rowKey="id" columns={columns} />
                 <div className="add_modal">
                     <Modal
                         title="Modal"

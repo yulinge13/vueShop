@@ -41,7 +41,6 @@ export const TestComp = (LoadComponent) => {
         }
 
         async componentDidMount() {
-            console.log(LoadComponent)
             this.setState({
                 Child: LoadComponent
             })

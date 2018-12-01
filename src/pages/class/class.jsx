@@ -13,11 +13,9 @@ class ClassPage extends Component {
             columns: [{
                 title: '一级分类',
                 dataIndex: 'firstClassName',
-                key: 'firstClassName',
             }, {
                 title: '二级分类',
                 dataIndex: 'secClassName',
-                key: 'secClassName',
             }],
             tableData: [],//表格数据
         }
@@ -56,7 +54,7 @@ class ClassPage extends Component {
                     <Input placeholder="Basic usage" value={secClassName} onChange={e => this.getValue('secClassName', e.target.value)} />
                     <Button type="primary" onClick={this.handleAddClass.bind(this)}>Add</Button>
                 </div>
-                <Table dataSource={tableData} columns={columns} />
+                <Table dataSource={tableData} rowKey="id" columns={columns} />
             </div>
         )
     }
