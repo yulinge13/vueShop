@@ -109,6 +109,38 @@ const httpLists = {
                 data
             })
             return handleHttp(res)
+        },
+        //获取订单详情
+        async orderInfo(data) {
+            const res = await httpGet({
+                url: '/orderInfo',
+                data
+            })
+            return handleHttp(res)
+        },
+        //收货
+        async getOrder(data) {
+            const res = await httpPost({
+                url: '/getOrder',
+                data
+            })
+            return handleHttp(res)
+        },
+        //评论
+        async comments(data){
+            const res = await httpPost({
+                url: '/comments',
+                data
+            })
+            return handleHttp(res)
+        },
+        //获取商品详情
+        async getProductInfo(data){
+            const res = await httpGet({
+                url: '/getProductInfo',
+                data
+            })
+            return handleHttp(res)
         }
     }
 }

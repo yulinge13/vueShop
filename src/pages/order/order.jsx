@@ -3,10 +3,12 @@ import {
     Button,
     Table,
     Select,
-    message
+    message,
+    Form
 } from 'antd';
 import '../productAdd/product_add.less'
 import httpLists from '../../utils/http'
+import {connect} from 'react-redux'
 const Option = Select.Option;
 let { containHttp } = httpLists
 const {
@@ -15,12 +17,17 @@ const {
     getAllProduct,
     orderPay
 } = containHttp
+@connect(
+    state => {
+        return {
+        }
+    },
+    dispatch => {
+        return {
 
-function getBase64(img, callback) {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img);
-}
+        }
+    }
+)
 class Order extends Component {
     constructor(props) {
         super(props)
@@ -71,7 +78,13 @@ class Order extends Component {
                                 }}
                             >
                                 <Button type="primary" shape="circle" icon="shopping" style={{ marginRight: '10px' }} onClick={this.pay.bind(this, columns)} />
-                            </div>) : null
+                            </div>) : (<div
+                                style={{
+                                    display: 'flex'
+                                }}
+                            >
+                                <Button type="primary" shape="circle" icon="book" style={{ marginRight: '10px' }} onClick={this.selectRowInfo.bind(this, columns)} />
+                            </div>)
 
                     }
                 }
@@ -106,8 +119,6 @@ class Order extends Component {
             if (res.success) {
                 message.success(res.msg)
                 this.getLists()
-            } else {
-                message.error(res.msg)
             }
         })
     }
@@ -141,8 +152,6 @@ class Order extends Component {
             if (res.success) {
                 message.success(res.msg)
                 this.getLists()
-            } else {
-                message.error(res.msg)
             }
         })
     }
@@ -150,6 +159,15 @@ class Order extends Component {
     selectRow(val) {
         this.setState({
             productId: val
+        })
+    }
+    //查看订单详情
+    selectRowInfo(row){
+        this.props.history.push({
+            pathname:'/orderDetail',
+            state:{
+                id:row.orderId
+            }
         })
     }
     render() {
@@ -184,7 +202,7 @@ class Order extends Component {
                         <Button type="primary" onClick={this.addOrder.bind(this)}>ADD Order</Button>
                     </div>
                 </div>
-                <Table dataSource={orderLists} columns={columns} />
+                <Table dataSource={orderLists} columns={columns}/>
             </div>
         );
     }
