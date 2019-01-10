@@ -48,13 +48,8 @@ function* login() {
 
 }
 
-function* run() {
-    const action = yield take('LOGIN');
-    console.log('const action = yield take)')
-}
 export default function* rootSaga() {
     yield all([
         fork(login),
-        fork(run),
     ]);
 }
